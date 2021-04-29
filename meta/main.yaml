@@ -1,0 +1,23 @@
+---
+
+galaxy_info:
+  role_name: vault
+  description: Vault install
+  author: Bruno CHIREZ
+  company: BC Interactive
+
+  license: MIT
+
+  min_ansible_version: 1.2
+
+  platforms:
+  - name: Debian
+    versions:
+    - buster
+
+  galaxy_tags:
+  - system
+  - vault
+  - hashicorp
+
+dependencies: []

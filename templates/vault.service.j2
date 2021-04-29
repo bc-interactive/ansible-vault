@@ -1,0 +1,17 @@
+
+[Unit]
+Description=Vault server
+Documentation=https://vaultproject.io/docs/
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+User={{ vault_user }}
+Group={{ vault_group }}
+ExecStart=/usr/local/bin/vault server -dev
+KillMode=process
+KillSignal=SIGINT
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target

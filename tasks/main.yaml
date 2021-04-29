@@ -1,0 +1,46 @@
+---
+
+- apt:
+    name: ["unzip"]
+    state: present
+    install_recommends: no
+
+- get_url:
+    url: "https://releases.hashicorp.com/vault/{{ vault_version}}/vault_{{ vault_version }}_linux_amd64.zip"
+    dest: "/tmp/vault_{{ vault_version }}_linux_amd64.zip"
+    mode: 0644
+    checksum: "sha256:https://releases.hashicorp.com/vault/{{ vault_version }}/vault_{{ vault_version }}_SHA256SUMS"
+
+- unarchive:
+    src: "/tmp/vault_{{ vault_version }}_linux_amd64.zip"
+    dest: /usr/local/bin/
+    remote_src: yes
+    owner: root
+    group: root
+    mode: 0755
+
+- group:
+    name: "{{ vault_group }}"
+    state: present
+    system: yes
+
+- user:
+    name: "{{ vault_user }}"
+    state: present
+    group: "{{ vault_group }}"
+    system: yes
+
+- template:
+    src: vault.service.j2
+    dest: /lib/systemd/system/vault.service
+    owner: root
+    group: root
+    mode: 0644
+
+- systemd:
+    daemon_reload: true
+
+- service:
+    name: vault
+    enabled: true
+    state: started
